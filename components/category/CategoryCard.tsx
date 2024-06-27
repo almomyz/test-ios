@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import Accordion from "react-native-collapsible/Accordion";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Colors } from "@/constants/Colors";
@@ -8,73 +8,77 @@ import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-
-interface Section {
-    title: string;
-    content: string[];
+import {
+    Categories,
+    SubcategoryLevel1,
+    SubcategoryLevel2,
+} from "@/models/Categories";
+import { SvgUri } from "react-native-svg";
+import { BASE_URL_IMAGE } from "@/constants/Api";
+import { useNavigation, NavigationProp } from "@react-navigation/native";
+import { useFilter } from "@/hooks/context/FilterContext";
+interface Props {
+    data: Categories[];
 }
 
-const SECTIONS: Section[] = [
-    {
-        title: "Mobile Phones, Tablets & Accessories",
-        content: [
-            "Smartphones",
-            "Tablets",
-            "Cases & Covers",
-            "Chargers",
-            "Screen Protectors",
-        ],
-    },
-    {
-        title: "Computers & Laptops",
-        content: [
-            "Laptops",
-            "Desktops",
-            "Monitors",
-            "Keyboards & Mice",
-            "Accessories",
-        ],
-    },
-    {
-        title: "Audio & Headphones",
-        content: ["Headphones", "Earbuds", "Speakers", "Home Audio Systems"],
-    },
-    {
-        title: "Cameras & Photography",
-        content: ["Digital Cameras", "Lenses", "Tripods", "Memory Cards"],
-    },
-    {
-        title: "Wearable Technology",
-        content: [],
-    },
-];
+type RootStackParamList = {
+    ProductList: undefined;
+    products: {};
+};
 
-const CategoryCard: React.FC = () => {
+const CategoryCard: React.FC<Props> = ({ data }) => {
     const [activeSections, setActiveSections] = useState<number[]>([]);
+    const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+    const { state, dispatch } = useFilter();
+    const handleTextClick = (id: number) => {
+        console.log("Category ID:", id);
+        setCategoryQuery([id]);
+        navigation.navigate("products", {});
+    };
 
-    const renderHeader = (section: Section, _: number, isActive: boolean) => {
+    const setCategoryQuery = (query: number[]) => {
+        dispatch({ type: "SET_CATEGORIES", payload: query });
+        dispatch({ type: "SET_SELECTED_CATEGORIES", payload: query });
+    };
+    const renderHeader = (
+        section: SubcategoryLevel1,
+        index: number,
+        isActive: boolean
+    ) => {
         return (
             <View style={styles.header}>
-                <Text style={styles.headerText}>{section.title}</Text>
-                <Icon
-                    name={isActive ? "expand-less" : "expand-more"}
-                    size={wp("8%")} // Responsive icon size
-                    color={Colors.primaryColor}
-                    style={styles.icon}
-                />
+                <TouchableOpacity onPress={() => handleTextClick(section.id)}>
+                    <Text style={styles.headerText}>{section.Name}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => toggleSection(index)}>
+                    <Icon
+                        name={isActive ? "expand-less" : "expand-more"}
+                        size={wp("8%")} // Responsive icon size
+                        color={Colors.primaryColor}
+                        style={styles.icon}
+                    />
+                </TouchableOpacity>
             </View>
         );
     };
 
-    const renderContent = (section: Section) => {
+    const renderContent = (section: SubcategoryLevel1) => {
         return (
             <View style={styles.content}>
                 <View style={styles.contentRow}>
-                    {section.content.map((item: string, index: number) => (
-                        <View key={index} style={styles.contentItem}>
-                            <Text style={styles.contentText}>{item}</Text>
-                        </View>
-                    ))}
+                    {section.SubcategoriesLevel2?.map(
+                        (item: SubcategoryLevel2) => (
+                            <View key={item.id} style={styles.contentItem}>
+                                <TouchableOpacity
+                                    onPress={() => handleTextClick(item.id)}
+                                >
+                                    <Text style={styles.contentText}>
+                                        {item.Name}
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                        )
+                    )}
                 </View>
             </View>
         );
@@ -84,29 +88,40 @@ const CategoryCard: React.FC = () => {
         setActiveSections(activeSections);
     };
 
-    const ListHeader = () => (
+    const toggleSection = (index: number) => {
+        let newActiveSections = [...activeSections];
+        if (newActiveSections.includes(index)) {
+            newActiveSections = newActiveSections.filter((i) => i !== index);
+        } else {
+            newActiveSections.push(index);
+        }
+        setActiveSections(newActiveSections);
+    };
+
+    const ListHeader = ({ category }: { category: Categories }) => (
         <View style={styles.headerContainer}>
-            <Icon
-                name="devices"
-                size={wp("8%")} // Responsive icon size
-                color={Colors.primaryColor}
-                style={styles.icon}
-            />
-            <Text style={styles.headerText2}>Electronics</Text>
+            <SvgUri style={styles.icon} uri={BASE_URL_IMAGE + category.Image} />
+            <TouchableOpacity onPress={() => handleTextClick(category.id)}>
+                <Text style={styles.headerText2}>{category.Name}</Text>
+            </TouchableOpacity>
         </View>
     );
 
     return (
         <View style={styles.container}>
-            <ListHeader />
-            <Accordion
-                sections={SECTIONS}
-                activeSections={activeSections}
-                renderHeader={renderHeader}
-                renderContent={renderContent}
-                onChange={updateSections}
-                underlayColor="transparent"
-            />
+            {data.map((category, index) => (
+                <View key={category.id}>
+                    <ListHeader category={category} />
+                    <Accordion
+                        sections={category.SubcategoriesLevel1 ?? []}
+                        activeSections={activeSections}
+                        renderHeader={renderHeader}
+                        renderContent={renderContent}
+                        onChange={updateSections}
+                        underlayColor="transparent"
+                    />
+                </View>
+            ))}
         </View>
     );
 };

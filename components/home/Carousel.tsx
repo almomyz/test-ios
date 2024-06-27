@@ -108,9 +108,10 @@ const styles = StyleSheet.create({
         position: "relative",
     },
     image: {
-        height: hp("35%"),
+        flex: 1,
+        height: "auto",
         width: "100%",
-        resizeMode: "stretch",
+        resizeMode: "contain", // Changed to 'cover' to maintain aspect ratio
     },
     logo: {
         position: "absolute",
@@ -135,6 +136,7 @@ const styles = StyleSheet.create({
         height: wp("2.5%"),
         borderRadius: wp("1.25%"),
         marginHorizontal: wp("1.25%"),
+        elevation: 5,
     },
     activeDot: {
         backgroundColor: Colors.primaryColor,

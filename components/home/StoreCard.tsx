@@ -1,5 +1,12 @@
 import React from "react";
-import { View, Text, Image, StyleSheet, Pressable } from "react-native";
+import {
+    View,
+    Text,
+    Image,
+    StyleSheet,
+    Pressable,
+    ImageBackground,
+} from "react-native";
 import { MontserratFont } from "@/constants/Fonts";
 import {
     widthPercentageToDP as wp,
@@ -7,17 +14,19 @@ import {
 } from "react-native-responsive-screen";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
 import { useFilter } from "@/hooks/context/FilterContext";
+import { SvgUri } from "react-native-svg";
+import { BASE_URL_IMAGE } from "@/constants/Api";
 interface StoreCardProps {
     name: string;
     imageUrl: string;
-    id:number
+    id: number;
 }
 type RootStackParamList = {
     ProductList: undefined;
     products: {};
 };
 
-const StoreCard: React.FC<StoreCardProps> = ({ name, imageUrl,id }) => {
+const StoreCard: React.FC<StoreCardProps> = ({ name, imageUrl, id }) => {
     const { state, dispatch } = useFilter();
 
     const setStoreQuery = (query: number[]) => {
@@ -33,12 +42,18 @@ const StoreCard: React.FC<StoreCardProps> = ({ name, imageUrl,id }) => {
         <Pressable onPress={handlePress}>
             <View style={styles.container}>
                 <View style={styles.cardContainer}>
-                    <Image
-                        style={styles.logo}
+                    <ImageBackground
+                        style={styles.imageBackground}
                         source={{
-                            uri: imageUrl,
+                            uri: "https://firebasestorage.googleapis.com/v0/b/mlproject-60be1.appspot.com/o/Rectangle%2012%20(3).svg?alt=media&token=4deba809-f44e-4e09-954b-92d268a0871a",
                         }}
-                    />
+                    >
+                        <SvgUri
+                            height={hp("10%")}
+                            width={wp("40%")}
+                            uri={BASE_URL_IMAGE + imageUrl}
+                        />
+                    </ImageBackground>
                 </View>
                 <Text style={styles.text}>{name}</Text>
             </View>
@@ -61,6 +76,13 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         shadowOpacity: 0.25,
         elevation: 5,
+    },
+    imageBackground: {
+        position: "absolute",
+        width: wp("45%"),
+        height: hp("10%"),
+        margin: wp("2.5%"),
+        resizeMode: "cover",
     },
     logo: {
         height: hp("10%"),

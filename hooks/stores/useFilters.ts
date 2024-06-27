@@ -6,7 +6,7 @@ import {
 import axios, { AxiosResponse } from "axios";
 import { Store } from "@/models/Store";
 import { Brand } from "@/models/Brand";
-import { Category } from "@/models/Category";
+import { Category } from "@/models/Categories";
 import { API_URL } from "@/constants/Api";
 interface Filters {
     brands: Brand[];

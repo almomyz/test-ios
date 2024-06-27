@@ -28,7 +28,11 @@ const renderProductItem = ({ item }: { item: Product | null }) => {
     if (!item) {
         return <LoadingCard />;
     }
-    return <ProductCard key={item.id} product={item} />;
+    return (
+        <View style={styles.containerList}>
+            <ProductCard key={item.id} product={item} />
+        </View>
+    );
 };
 
 type ListHeaderProps = {
@@ -36,6 +40,9 @@ type ListHeaderProps = {
     setSearchQuery: (query: string) => void;
     filteredProductsCount: number;
     searchQuery: string;
+    handleItemSelect: (item: string) => void;
+    data: string[];
+    isHide: boolean;
 };
 
 const ListHeader = React.memo(
@@ -44,9 +51,19 @@ const ListHeader = React.memo(
         setSearchQuery,
         filteredProductsCount,
         searchQuery,
+        data,
+        handleItemSelect,
+        isHide,
     }: ListHeaderProps) => (
         <View>
-            <InputSearch setSearchQuery={setSearchQuery} />
+            <View style={styles.inupt}>
+                <InputSearch
+                    data={data}
+                    handleItemSelect={handleItemSelect}
+                    setSearchQuery={setSearchQuery}
+                    hideList={isHide}
+                />
+            </View>
             <View style={styles.headerContainer}>
                 <Text style={styles.headerText}>
                     {searchQuery || "Products"}
@@ -84,11 +101,22 @@ export default function Products() {
     const [isModalVisible, setModalVisible] = React.useState(false);
     const [productsList, setProductsList] = React.useState<Product[]>([]);
     const [showActivityIndicator, setShowActivityIndicator] = useState(false);
+    const [hideList, setHideList] = useState(false);
     const { data, isLoading, error } = useQuery({
         queryKey: ["products", state],
         queryFn: () =>
             fetchProducts({ ...state, priceRange: [minPrice, maxPrice] }, page),
     });
+    const datasuggestion = [
+        "iphone",
+        "samsung",
+        "xiaomi",
+        "oneplus",
+        "redmi",
+        "nokia",
+        "sony",
+        "huawei",
+    ];
 
     useEffect(() => {
         if (data) {
@@ -111,11 +139,21 @@ export default function Products() {
             return () => {
                 // This cleanup runs when the screen loses focus
                 dispatch({ type: "SET_SEARCH", payload: "" });
+                dispatch({ type: "RESET_FILTERS" });
             };
         }, [])
     );
 
+    const handleItemSelect = (item: string) => {
+        console.log("Selected Item:", item);
+        setHideList(true);
+        dispatch({ type: "SET_SEARCH", payload: item });
+
+        // Handle the selected item
+    };
+
     const setSearchQuery = (query: string) => {
+        setHideList(false);
         if (query.length >= 3) {
             dispatch({ type: "SET_SEARCH", payload: query });
         }
@@ -148,13 +186,14 @@ export default function Products() {
                 setSearchQuery={setSearchQuery}
                 filteredProductsCount={data?.total || 0}
                 searchQuery={search}
+                handleItemSelect={handleItemSelect}
+                data={datasuggestion}
+                isHide={hideList}
             />
             <FlatList
                 data={productsList}
                 renderItem={renderProductItem}
-                // keyExtractor={(item, index) =>
-                //     item ? item.id.toString() : `loading-${index}`
-                // }
+                style={styles.listStyle}
                 ListFooterComponent={() =>
                     showActivityIndicator && (
                         <ActivityIndicator
@@ -175,6 +214,9 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: "#fff",
         flex: 1,
+    },
+    containerList: {
+        marginTop: hp("1%"),
     },
     headerContainer: {
         width: "100%",
@@ -197,5 +239,12 @@ const styles = StyleSheet.create({
     errorText: {
         color: "red",
         padding: wp("4%"),
+    },
+    listStyle: {
+        marginLeft: wp("1%"),
+        marginRight: wp("1%"),
+    },
+    inupt: {
+        zIndex: 1,
     },
 });

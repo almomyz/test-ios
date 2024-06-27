@@ -54,6 +54,11 @@ export const styles = StyleSheet.create({
     icon: {
         marginHorizontal: wp("1%"),
     },
+    resetButtonContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+    },
     header: {
         flexDirection: "row",
         justifyContent: "space-between",
@@ -115,8 +120,6 @@ export const styles = StyleSheet.create({
         flexGrow: 1,
     },
     buttonContainer: {
-        flexDirection: "row",
-        justifyContent: "space-between",
         marginHorizontal: wp("7.5%"),
         marginTop: hp("2%"),
     },
@@ -125,7 +128,7 @@ export const styles = StyleSheet.create({
         paddingVertical: hp("2%"),
         borderRadius: wp("2.5%"),
         alignItems: "center",
-        width: "48%",
+        width: "100%",
     },
     applyButtonText: {
         color: "#fff",
@@ -141,7 +144,7 @@ export const styles = StyleSheet.create({
         width: "48%",
     },
     resetButtonText: {
-        color: "#fff",
+        color: Colors.primaryColor,
         fontSize: wp("4%"),
         fontWeight: "bold",
         fontFamily: MontserratFont,

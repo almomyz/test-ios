@@ -122,7 +122,7 @@ const products: Product[] = [
                 Store: {
                     id: 4,
                     Name: "SiteX",
-                    Logo: "https://firebasestorage.googleapis.com/v0/b/mlproject-60be1.appspot.com/o/photo_2024-05-29_14-38-12.jpg?alt=media&token=ea886d5d-6bfb-46cb-bada-03bd478bd208",
+                    Logo: "xcite-logo.svg",
                     createdAt: "2024-06-05T05:24:57.000Z",
                     updatedAt: "2024-06-05T05:24:57.000Z",
                 },
@@ -434,7 +434,7 @@ const products: Product[] = [
                 Store: {
                     id: 4,
                     Name: "SiteX",
-                    Logo: "https://firebasestorage.googleapis.com/v0/b/mlproject-60be1.appspot.com/o/photo_2024-05-29_14-38-12.jpg?alt=media&token=ea886d5d-6bfb-46cb-bada-03bd478bd208",
+                    Logo: "xcite-logo.svg",
                     createdAt: "2024-06-05T05:24:57.000Z",
                     updatedAt: "2024-06-05T05:24:57.000Z",
                 },
@@ -746,7 +746,7 @@ const products: Product[] = [
                 Store: {
                     id: 4,
                     Name: "SiteX",
-                    Logo: "https://firebasestorage.googleapis.com/v0/b/mlproject-60be1.appspot.com/o/photo_2024-05-29_14-38-12.jpg?alt=media&token=ea886d5d-6bfb-46cb-bada-03bd478bd208",
+                    Logo: "xcite-logo.svg",
                     createdAt: "2024-06-05T05:24:57.000Z",
                     updatedAt: "2024-06-05T05:24:57.000Z",
                 },
@@ -1058,7 +1058,7 @@ const products: Product[] = [
                 Store: {
                     id: 4,
                     Name: "SiteX",
-                    Logo: "https://firebasestorage.googleapis.com/v0/b/mlproject-60be1.appspot.com/o/photo_2024-05-29_14-38-12.jpg?alt=media&token=ea886d5d-6bfb-46cb-bada-03bd478bd208",
+                    Logo: "xcite-logo.svg",
                     createdAt: "2024-06-05T05:24:57.000Z",
                     updatedAt: "2024-06-05T05:24:57.000Z",
                 },
@@ -1370,7 +1370,7 @@ const products: Product[] = [
                 Store: {
                     id: 4,
                     Name: "SiteX",
-                    Logo: "https://firebasestorage.googleapis.com/v0/b/mlproject-60be1.appspot.com/o/photo_2024-05-29_14-38-12.jpg?alt=media&token=ea886d5d-6bfb-46cb-bada-03bd478bd208",
+                    Logo: "xcite-logo.svg",
                     createdAt: "2024-06-05T05:24:57.000Z",
                     updatedAt: "2024-06-05T05:24:57.000Z",
                 },
@@ -1584,7 +1584,9 @@ const ListHeader = () => (
 const HotDeals = () => {
     // Function to render each item in the FlatList
     const renderProductItem = ({ item }: { item: Product }) => (
-        <ProductCard product={item} />
+        <View style={styles.containerList}>
+            <ProductCard product={item} />
+        </View>
     );
 
     return (
@@ -1624,6 +1626,9 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: Colors.secondaryColor,
         fontFamily: MontserratFont,
+    },
+    containerList: {
+        marginTop: hp("1%"),
     },
 });
 

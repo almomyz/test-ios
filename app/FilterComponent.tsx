@@ -224,13 +224,20 @@ const FilterComponent: React.FC<FilterComponentProps> = ({ toggleModal }) => {
                             />
                             <Text style={styles.headerFilterText}>Filters</Text>
                         </View>
-                        <Icon
-                            name="close"
-                            size={wp("7.5%")}
-                            color={"#989696"}
-                            style={styles.icon}
-                            onPress={toggleModal}
-                        />
+                        <View style={styles.resetButtonContainer}>
+                            <TouchableOpacity onPress={handleResetFilters}>
+                                <Text style={styles.resetButtonText}>
+                                    Reset Filter
+                                </Text>
+                            </TouchableOpacity>
+                            <Icon
+                                name="close"
+                                size={wp("7.5%")}
+                                color={"#989696"}
+                                style={styles.icon}
+                                onPress={toggleModal}
+                            />
+                        </View>
                     </View>
 
                     <ScrollView style={styles.filterContent}>
@@ -252,14 +259,6 @@ const FilterComponent: React.FC<FilterComponentProps> = ({ toggleModal }) => {
                         >
                             <Text style={styles.applyButtonText}>
                                 Apply Filter
-                            </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={styles.resetButton}
-                            onPress={handleResetFilters}
-                        >
-                            <Text style={styles.resetButtonText}>
-                                Reset Filter
                             </Text>
                         </TouchableOpacity>
                     </View>

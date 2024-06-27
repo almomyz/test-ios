@@ -8,7 +8,8 @@ import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-
+import { SvgUri } from "react-native-svg";
+import { BASE_URL_IMAGE } from "@/constants/Api";
 interface ProductCardProps {
     product: Product;
 }
@@ -60,11 +61,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                         {Name}
                     </Text>
                     <View style={styles.priceContainer}>
-                        <Image
-                            style={styles.logo}
-                            source={{
-                                uri: logo,
-                            }}
+                        <SvgUri
+                            height={hp("6%")}
+                            width={wp("10%")}
+                            uri={BASE_URL_IMAGE + logo}
                         />
                         <Text style={styles.discountedPrice}>
                             {discountedPrice} {currency}
@@ -139,6 +139,7 @@ const styles = StyleSheet.create({
         fontSize: wp("3.2%"),
         fontWeight: "bold",
         color: Colors.bodyColor,
+        marginLeft:wp("1")
     },
     originalPrice: {
         fontSize: wp("2.8%"),

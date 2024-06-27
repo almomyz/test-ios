@@ -14,7 +14,8 @@ import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-
+import { SvgUri } from "react-native-svg";
+import { BASE_URL_IMAGE } from "@/constants/Api";
 interface PriceComparisonCardProps {
     product: Product;
 }
@@ -35,7 +36,11 @@ const PriceComparisonItem: React.FC<{
     return (
         <Pressable onPress={handlePress}>
             <View style={styles.itemContainer}>
-                <Image style={styles.logo} source={{ uri: logoUri }} />
+            <SvgUri
+            height={hp("5%")}
+            width={wp("20%")}
+            uri={BASE_URL_IMAGE + logoUri}
+        />
                 <View style={styles.textContainer}>
                     <Text style={styles.storeName}>{storeName}</Text>
                     <Text style={styles.price}>

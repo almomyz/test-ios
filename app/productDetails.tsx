@@ -54,7 +54,10 @@ const ProductDetails: React.FC = () => {
                 />
                 {data ? (
                     <>
-                        <CarouselComponent productPhotos={data.ProductPhotos} />
+                        <CarouselComponent
+                            productPhotos={data.ProductPhotos}
+                            available={data.Available}
+                        />
                         <ProductDetailsCard product={data} />
                     </>
                 ) : (
