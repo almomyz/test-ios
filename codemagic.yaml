@@ -1,5 +1,5 @@
 workflows:
-  react_native_workflow:
+  react_native_ios_workflow:
     name: React Native iOS Workflow
     max_build_duration: 60
     environment:
@@ -15,16 +15,12 @@ workflows:
     artifacts:
       - build/ios/Release-iphoneos/*.app
       - build/ios/Release-iphoneos/*.ipa
-    ios:
-      distribution_method: app-store
-      export_method: app-store
-      provisioning_profiles:
-        ios/YourApp.xcodeproj/YourApp: $YOUR_PROVISIONING_PROFILE
-      code_signing:
-        certificate_url: $CERTIFICATE_URL
-        certificate_pass: $CERTIFICATE_PASSWORD
-        provisioning_profile_url: $PROVISIONING_PROFILE_URL
+    app_store_connect:
+      apple_id: $APPLE_ID
+      asc_app_id: $ASC_APP_ID
+      team_id: $TEAM_ID
+      app_specific_password: $APP_SPECIFIC_PASSWORD
     publishing:
       email:
         recipients:
-          - abdu770213780@gmail.com
+          - your-email@example.com
