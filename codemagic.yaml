@@ -1,26 +1,5 @@
 workflows:
-  react_native_ios_workflow:
-    name: React Native iOS Workflow
-    max_build_duration: 60
-    environment:
-      vars:
-        REACT_NATIVE_VERSION: 0.70.0
-      node: 14.17.0
-      xcode: 13.3
-    scripts:
-      - name: Install dependencies
-        script: npm install
-      - name: Bundle React Native code
-        script: npx react-native bundle --platform ios --entry-file index.js --bundle-output ios/main.jsbundle --dev false
-    artifacts:
-      - build/ios/Release-iphoneos/*.app
-      - build/ios/Release-iphoneos/*.ipa
-    app_store_connect:
-      apple_id: $APPLE_ID
-      asc_app_id: $ASC_APP_ID
-      team_id: $TEAM_ID
-      app_specific_password: $APP_SPECIFIC_PASSWORD
-    publishing:
-      email:
-        recipients:
-          - your-email@example.com
+    sample-workflow:
+        name: Codemagic Sample Workflow
+        max_build_duration: 120
+        instance_type: mac_mini_m1
